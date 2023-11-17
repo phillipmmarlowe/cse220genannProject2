@@ -1,0 +1,867 @@
+#BEGIN Configuration used. Extracted from "esesc.conf":
+technology='ThisSOCTech'
+reportFile='pleaserun' # Environment Variable
+pwrmodel  ='McPatPwrCounters'
+cpusimu[0]='tradCORE'
+cpuemul[0]='QEMUSectionCPU'
+[tradCORE]
+type      ='ooo'
+throttlingRatio=1.000000e+00
+StoreSetSize=8192
+stForwardDelay=4
+scbSize   =8
+robSize   =80
+retireWidth=2
+retireDelay=3
+renameDelay=2
+prefetcher='PrefetchEngine'
+nTotalRegs=40
+MemoryReplay=false
+maxStores =24
+maxLoads  =24
+maxIRequests=3
+maxBranches=32
+issueWidth=2
+interClusterLat=0
+instQueueSize=24
+IL1       ="IL1_core IL1"
+fetchWidth=2
+enableICache=true
+enableDCache=true
+drainOnMiss=true
+DL1       ="DL1_core DL1"
+decodeDelay=2
+clusterScheduler='RoundRobin'
+cluster[0]='AUNIT'
+cluster[1]='MUNIT'
+cluster[2]='CUNIT'
+bpredDelay=3
+bpred2    ='BPredIssueX2'
+bpred     ='BPredIssueX'
+bb4Cycle  =1
+alignedFetch=true
+[ThisSOCTech]
+frequency =1.700000e+09
+[TASS]
+type      ='inst'
+ROIOnly   =false
+PowPredictionHist=5
+nInstWarmup=0
+nInstTiming=3.000000e+06
+nInstSkip =2.000000e+09
+nInstRabbit=3.000000e+07
+nInstMax  =4.000000e+09
+nInstDetail=1.000000e+05
+maxnsTime =1.000000e+12
+doPowPrediction=1
+[QEMUSectionCPU]
+type      ='qemu'
+syscall   ='NoSyscall'
+sampler   ='TASS'
+params[0] ='example1.rv'
+dorun     =true
+[PrivL2]
+size      =2097152
+sendFillPortOccp=2
+sendFillNumPorts=1
+replPolicy='LRU'
+numBanks  =1
+missDelay =15
+maxRequests=32
+lowerLevel="BigMem Memory"
+inclusive =true
+hitDelay  =15
+directory =true
+deviceType='cache'
+bsize     =32
+bkPortOccp=1
+bkNumPorts=1
+assoc     =16
+[PrefetchEngine]
+type      ='void'
+pfStride  =1
+minDistance=0
+maxPrefetch=0
+[NoSyscall]
+runtime   =false
+generate  =false
+enable    =false
+[MUNIT_SALU]
+Occ       =1
+Num       =1
+[MUNIT_MALU]
+Occ       =1
+Num       =1
+[MUNIT_CALU]
+Occ       =1
+Num       =1
+[MUNIT_BALU]
+Occ       =1
+Num       =1
+[MUNIT_AALU]
+Occ       =1
+Num       =1
+[MUNIT]
+winSize   =20
+schedPortOccp=1
+schedNumPorts=2
+schedDelay=0
+recycleAt ='execute'
+nRegs     =1024
+iSALU_STUnit='MUNIT_MALU'
+iSALU_STLat=0
+iSALU_SCUnit='MUNIT_MALU'
+iSALU_SCLat=0
+iSALU_LLUnit='MUNIT_MALU'
+iSALU_LLLat=0
+iSALU_ADDRUnit='MUNIT_SALU'
+iSALU_ADDRLat=0
+iLALU_LDUnit='MUNIT_MALU'
+iLALU_LDLat=0
+iCALU_MULTUnit='MUNIT_CALU'
+iCALU_MULTLat=5
+iCALU_DIVUnit='MUNIT_CALU'
+iCALU_DIVLat=8
+iBALU_RJUMPUnit='MUNIT_BALU'
+iBALU_RJUMPLat=4
+iBALU_RETUnit='MUNIT_BALU'
+iBALU_RETLat=4
+iBALU_RCALLUnit='MUNIT_BALU'
+iBALU_RCALLLat=4
+iBALU_RBRANCHUnit='MUNIT_BALU'
+iBALU_RBRANCHLat=4
+iBALU_LJUMPUnit='MUNIT_BALU'
+iBALU_LJUMPLat=4
+iBALU_LCALLUnit='MUNIT_BALU'
+iBALU_LCALLLat=4
+iBALU_LBRANCHUnit='MUNIT_BALU'
+iBALU_LBRANCHLat=4
+iAALUUnit ='MUNIT_AALU'
+iAALULat  =1
+[McPatPwrCounters]
+doPower   =false
+[IL1_core]
+size      =32768
+replPolicy='LRU'
+numBanks  =1
+missDelay =1
+maxRequests=32
+lowerLevel="PrivL2 L2 sharedby 1"
+inclusive =true
+hitDelay  =2
+directory =false
+deviceType='icache'
+bsize     =32
+bkPortOccp=1
+bkNumPorts=1
+assoc     =4
+[DL1_core]
+skew      =false
+size      =65536
+sendFillPortOccp=0
+sendFillNumPorts=1
+replPolicy='LRU'
+numBanks  =1
+missDelay =5
+maxRequests=8
+lowerLevel="PrivL2 L2 sharedby 2"
+inclusive =true
+hitDelay  =5
+directory =false
+deviceType='cache'
+bsize     =32
+bkPortOccp=1
+bkNumPorts=1
+bankShift =4
+assoc     =4
+[CUNIT_CALU]
+Occ       =1
+Num       =2
+[CUNIT]
+winSize   =32
+schedPortOccp=1
+schedNumPorts=1
+schedDelay=0
+recycleAt ='retire'
+nRegs     =32
+iCALU_FPMULTUnit='CUNIT_CALU'
+iCALU_FPMULTLat=7
+iCALU_FPDIVUnit='CUNIT_CALU'
+iCALU_FPDIVLat=28
+iCALU_FPALUUnit='CUNIT_CALU'
+iCALU_FPALULat=4
+[BPredIssueX2]
+useDolc   =true
+type      ='2level'
+l2size    =2048
+l2Bits    =2
+l1size    =1
+historySize=15
+btbSize   =64
+btbReplPolicy='LRU'
+btbicache =true
+btbHistorySize=9
+btbBsize  =1
+btbAssoc  =4
+addrShift =1
+[BPredIssueX]
+type      ='2bit'
+size      =2048
+rasSize   =8
+rasPrefetch=0
+btbSize   =16
+btbReplPolicy='RANDOM'
+btbHistorySize=0
+btbBsize  =1
+btbAssoc  =16
+BTACDelay =4
+Bits      =2
+addrShift =1
+[BigMem]
+hitDelay  =60
+deviceType='niceCache'
+coldWarmup=false
+bsize     =64
+[AUNIT_AALU]
+Occ       =1
+Num       =1
+[AUNIT]
+winSize   =20
+schedPortOccp=1
+schedNumPorts=1
+schedDelay=0
+recycleAt ='execute'
+nRegs     =1024
+iRALUUnit ='AUNIT_AALU'
+iRALULat  =1
+iAALUUnit ='AUNIT_AALU'
+iAALULat  =1
+#END Configuration used. Extracted from "esesc.conf":
+OSSim:reportName=done
+OSSim:beginTime=Fri Nov 17 06:47:33 2023
+
+OSSim:endTime=Fri Nov 17 06:50:31 2023
+
+OSSim:nCPUs=1
+OSSim:P(0)_Sampler=0
+OSSim:P(0)_Type=0
+OSSim:nSampler=1
+OSSim:globalClock=317484046
+OSSim:msecs=  178.30
+#BEGIN GStats::report done
+DL1(0):displacedRecv=0.000000
+DL1(0):displacedSend=7182604.000000
+DL1(0):invAll=0.000000
+DL1(0):invNone=143.000000
+DL1(0):invOne=0.000000
+DL1(0):lineFill=7182739.000000
+DL1(0):MMUAck=0.000000
+DL1(0):MMUHalfMiss=0.000000
+DL1(0):MMUHit=0.000000
+DL1(0):MMUMiss=0.000000
+DL1(0):MMUMissState=0.000000
+DL1(0):MMUSetState=0.000000
+DL1(0):nPrefetchDropped=0.000000
+DL1(0):nPrefetchHitBusy=0.000000
+DL1(0):nPrefetchHitLine=0.000000
+DL1(0):nPrefetchHitPending=0.000000
+DL1(0):nPrefetchLineFill=0.000000
+DL1(0):nPrefetchRedundant=0.000000
+DL1(0):nPrefetchUseful=0.000000
+DL1(0):nPrefetchWasteful=0.000000
+DL1(0):nSendPrefetch=0.000000
+DL1(0):nTryPrefetch=0.000000
+DL1(0):readHalfMiss=15796920.000000
+DL1(0):readHit=43039409.000000
+DL1(0):readMiss=7159211.000000
+DL1(0):readMissState=0.000000
+DL1(0):setDirtyAck=0.000000
+DL1(0):setDirtySetState=0.000000
+DL1(0):setExclusiveAck=7182739.000000
+DL1(0):setExclusiveHalfMiss=0.000000
+DL1(0):setExclusiveHit=0.000000
+DL1(0):setExclusiveMiss=0.000000
+DL1(0):setExclusiveMissState=0.000000
+DL1(0):setExclusiveSetState=0.000000
+DL1(0):setInvalidAck=0.000000
+DL1(0):setInvalidHalfMiss=0.000000
+DL1(0):setInvalidHit=0.000000
+DL1(0):setInvalidMiss=0.000000
+DL1(0):setInvalidMissState=0.000000
+DL1(0):setInvalidSetState=143.000000
+DL1(0):setSharedAck=0.000000
+DL1(0):setSharedHalfMiss=0.000000
+DL1(0):setSharedHit=0.000000
+DL1(0):setSharedMiss=0.000000
+DL1(0):setSharedMissState=0.000000
+DL1(0):setSharedSetState=0.000000
+DL1(0):setValidAck=0.000000
+DL1(0):setValidSetState=0.000000
+DL1(0):VPCMUAck=0.000000
+DL1(0):VPCMUHalfMiss=0.000000
+DL1(0):VPCMUHit=0.000000
+DL1(0):VPCMUMiss=0.000000
+DL1(0):VPCMUMissState=0.000000
+DL1(0):VPCMUSetState=0.000000
+DL1(0):writeBack=2374040.000000
+DL1(0):writeExclusive=0.000000
+DL1(0):writeHalfMiss=6663446.000000
+DL1(0):writeHit=2830705.000000
+DL1(0):writeMiss=23529.000000
+DL1(0):writeMissState=0.000000
+DL1(0)_avgHalfMemLat:n=22460366::v=65.118404
+DL1(0)_avgMemLat:n=75513219::v=36.205561
+DL1(0)_avgMissLat:n=7182739::v=84.715225
+DL1(0)_avgPrefetchLat:n=0::v=-nan
+DL1(0)_avgSnoopLat:n=0::v=-nan
+DL1(0)_bk(0)_occ:n=104244183::v=1.110309
+DL1(0)_capInvalidateHit=0.000000
+DL1(0)_capInvalidateMiss=0.000000
+DL1(0)_invalidateHit=0.000000
+DL1(0)_invalidateMiss=0.000000
+DL1(0)_MSHR:nStallConflict=23163375.000000
+DL1(0)_MSHR_avgSubUse:n=75513221::v=1.855385
+DL1(0)_MSHR_avgUse:n=75513221::v=4.775442
+DL1(0)_sendFill_occ:n=75513219::v=0.000000
+DL1(0)_tracker0=0.000000
+DL1(0)_tracker1=0.000000
+DL1(0)_tracker10=0.000000
+DL1(0)_tracker11=0.000000
+DL1(0)_tracker12=0.000000
+DL1(0)_tracker13=0.000000
+DL1(0)_tracker14=0.000000
+DL1(0)_tracker15=0.000000
+DL1(0)_tracker2=0.000000
+DL1(0)_tracker3=0.000000
+DL1(0)_tracker4=0.000000
+DL1(0)_tracker5=0.000000
+DL1(0)_tracker6=0.000000
+DL1(0)_tracker7=0.000000
+DL1(0)_tracker8=0.000000
+DL1(0)_tracker9=0.000000
+DL1(0)_trackerDown1=0.000000
+DL1(0)_trackerDown1n=0.000000
+DL1(0)_trackerDown2=0.000000
+DL1(0)_trackerDown2n=0.000000
+DL1(0)_trackerDown3=0.000000
+DL1(0)_trackerDown3n=0.000000
+DL1(0)_trackerDown4=0.000000
+DL1(0)_trackerDown4n=0.000000
+DL1(0)_trackerMore=0.000000
+DL1(0)_trackerOne=0.000000
+DL1(0)_trackerTwo=0.000000
+DL1(0)_trackerUp1=0.000000
+DL1(0)_trackerUp1n=0.000000
+DL1(0)_trackerZero=0.000000
+DL1(0)p_MSHR:nStallConflict=0.000000
+DL1(0)p_MSHR_avgSubUse:n=0::v=-nan
+DL1(0)p_MSHR_avgUse:n=0::v=-nan
+IL1(0):displacedRecv=0.000000
+IL1(0):displacedSend=0.000000
+IL1(0):invAll=0.000000
+IL1(0):invNone=1004.000000
+IL1(0):invOne=0.000000
+IL1(0):lineFill=811.000000
+IL1(0):MMUAck=0.000000
+IL1(0):MMUHalfMiss=0.000000
+IL1(0):MMUHit=0.000000
+IL1(0):MMUMiss=0.000000
+IL1(0):MMUMissState=0.000000
+IL1(0):MMUSetState=0.000000
+IL1(0):nPrefetchDropped=0.000000
+IL1(0):nPrefetchHitBusy=0.000000
+IL1(0):nPrefetchHitLine=0.000000
+IL1(0):nPrefetchHitPending=0.000000
+IL1(0):nPrefetchLineFill=0.000000
+IL1(0):nPrefetchRedundant=0.000000
+IL1(0):nPrefetchUseful=0.000000
+IL1(0):nPrefetchWasteful=0.000000
+IL1(0):nSendPrefetch=0.000000
+IL1(0):nTryPrefetch=0.000000
+IL1(0):readHalfMiss=1297.000000
+IL1(0):readHit=134952880.000000
+IL1(0):readMiss=811.000000
+IL1(0):readMissState=0.000000
+IL1(0):setDirtyAck=0.000000
+IL1(0):setDirtySetState=0.000000
+IL1(0):setExclusiveAck=811.000000
+IL1(0):setExclusiveHalfMiss=0.000000
+IL1(0):setExclusiveHit=0.000000
+IL1(0):setExclusiveMiss=0.000000
+IL1(0):setExclusiveMissState=0.000000
+IL1(0):setExclusiveSetState=0.000000
+IL1(0):setInvalidAck=0.000000
+IL1(0):setInvalidHalfMiss=0.000000
+IL1(0):setInvalidHit=0.000000
+IL1(0):setInvalidMiss=0.000000
+IL1(0):setInvalidMissState=0.000000
+IL1(0):setInvalidSetState=1004.000000
+IL1(0):setSharedAck=0.000000
+IL1(0):setSharedHalfMiss=0.000000
+IL1(0):setSharedHit=0.000000
+IL1(0):setSharedMiss=0.000000
+IL1(0):setSharedMissState=0.000000
+IL1(0):setSharedSetState=0.000000
+IL1(0):setValidAck=0.000000
+IL1(0):setValidSetState=0.000000
+IL1(0):VPCMUAck=0.000000
+IL1(0):VPCMUHalfMiss=0.000000
+IL1(0):VPCMUHit=0.000000
+IL1(0):VPCMUMiss=0.000000
+IL1(0):VPCMUMissState=0.000000
+IL1(0):VPCMUSetState=0.000000
+IL1(0):writeBack=0.000000
+IL1(0):writeExclusive=0.000000
+IL1(0):writeHalfMiss=0.000000
+IL1(0):writeHit=0.000000
+IL1(0):writeMiss=0.000000
+IL1(0):writeMissState=0.000000
+IL1(0)_avgHalfMemLat:n=1297::v=71.355436
+IL1(0)_avgMemLat:n=134954988::v=2.001138
+IL1(0)_avgMissLat:n=811::v=78.119605
+IL1(0)_avgPrefetchLat:n=0::v=-nan
+IL1(0)_avgSnoopLat:n=0::v=-nan
+IL1(0)_bk(0)_occ:n=134956610::v=0.000001
+IL1(0)_capInvalidateHit=0.000000
+IL1(0)_capInvalidateMiss=0.000000
+IL1(0)_invalidateHit=0.000000
+IL1(0)_invalidateMiss=0.000000
+IL1(0)_MSHR:nStallConflict=1668.000000
+IL1(0)_MSHR_avgSubUse:n=134954988::v=1.000014
+IL1(0)_MSHR_avgUse:n=134954988::v=1.000020
+IL1(0)_sendFill_occ:n=134954988::v=0.000027
+IL1(0)_tracker0=0.000000
+IL1(0)_tracker1=0.000000
+IL1(0)_tracker10=0.000000
+IL1(0)_tracker11=0.000000
+IL1(0)_tracker12=0.000000
+IL1(0)_tracker13=0.000000
+IL1(0)_tracker14=0.000000
+IL1(0)_tracker15=0.000000
+IL1(0)_tracker2=0.000000
+IL1(0)_tracker3=0.000000
+IL1(0)_tracker4=0.000000
+IL1(0)_tracker5=0.000000
+IL1(0)_tracker6=0.000000
+IL1(0)_tracker7=0.000000
+IL1(0)_tracker8=0.000000
+IL1(0)_tracker9=0.000000
+IL1(0)_trackerDown1=0.000000
+IL1(0)_trackerDown1n=0.000000
+IL1(0)_trackerDown2=0.000000
+IL1(0)_trackerDown2n=0.000000
+IL1(0)_trackerDown3=0.000000
+IL1(0)_trackerDown3n=0.000000
+IL1(0)_trackerDown4=0.000000
+IL1(0)_trackerDown4n=0.000000
+IL1(0)_trackerMore=0.000000
+IL1(0)_trackerOne=0.000000
+IL1(0)_trackerTwo=0.000000
+IL1(0)_trackerUp1=0.000000
+IL1(0)_trackerUp1n=0.000000
+IL1(0)_trackerZero=0.000000
+IL1(0)p_MSHR:nStallConflict=0.000000
+IL1(0)p_MSHR_avgSubUse:n=0::v=-nan
+IL1(0)p_MSHR_avgUse:n=0::v=-nan
+L2(0):displacedRecv=7182604.000000
+L2(0):displacedSend=2143959.000000
+L2(0):invAll=0.000000
+L2(0):invNone=2142812.000000
+L2(0):invOne=1147.000000
+L2(0):lineFill=7025315.000000
+L2(0):MMUAck=0.000000
+L2(0):MMUHalfMiss=0.000000
+L2(0):MMUHit=0.000000
+L2(0):MMUMiss=0.000000
+L2(0):MMUMissState=0.000000
+L2(0):MMUSetState=0.000000
+L2(0):nPrefetchDropped=0.000000
+L2(0):nPrefetchHitBusy=0.000000
+L2(0):nPrefetchHitLine=0.000000
+L2(0):nPrefetchHitPending=0.000000
+L2(0):nPrefetchLineFill=0.000000
+L2(0):nPrefetchRedundant=0.000000
+L2(0):nPrefetchUseful=0.000000
+L2(0):nPrefetchWasteful=0.000000
+L2(0):nSendPrefetch=0.000000
+L2(0):nTryPrefetch=0.000000
+L2(0):readHalfMiss=0.000000
+L2(0):readHit=158235.000000
+L2(0):readMiss=7001787.000000
+L2(0):readMissState=0.000000
+L2(0):setDirtyAck=0.000000
+L2(0):setDirtySetState=0.000000
+L2(0):setExclusiveAck=7025315.000000
+L2(0):setExclusiveHalfMiss=0.000000
+L2(0):setExclusiveHit=0.000000
+L2(0):setExclusiveMiss=23529.000000
+L2(0):setExclusiveMissState=0.000000
+L2(0):setExclusiveSetState=0.000000
+L2(0):setInvalidAck=0.000000
+L2(0):setInvalidHalfMiss=0.000000
+L2(0):setInvalidHit=0.000000
+L2(0):setInvalidMiss=0.000000
+L2(0):setInvalidMissState=0.000000
+L2(0):setInvalidSetState=0.000000
+L2(0):setSharedAck=0.000000
+L2(0):setSharedHalfMiss=0.000000
+L2(0):setSharedHit=0.000000
+L2(0):setSharedMiss=0.000000
+L2(0):setSharedMissState=0.000000
+L2(0):setSharedSetState=0.000000
+L2(0):setValidAck=0.000000
+L2(0):setValidSetState=0.000000
+L2(0):VPCMUAck=0.000000
+L2(0):VPCMUHalfMiss=0.000000
+L2(0):VPCMUHit=0.000000
+L2(0):VPCMUMiss=0.000000
+L2(0):VPCMUMissState=0.000000
+L2(0):VPCMUSetState=0.000000
+L2(0):writeBack=2142812.000000
+L2(0):writeExclusive=0.000000
+L2(0):writeHalfMiss=0.000000
+L2(0):writeHit=0.000000
+L2(0):writeMiss=0.000000
+L2(0):writeMissState=0.000000
+L2(0)_avgHalfMemLat:n=0::v=-nan
+L2(0)_avgMemLat:n=7183550::v=81.627609
+L2(0)_avgMissLat:n=7025315::v=82.887147
+L2(0)_avgPrefetchLat:n=0::v=-nan
+L2(0)_avgSnoopLat:n=2294::v=2.000000
+L2(0)_bk(0)_occ:n=21391470::v=0.036544
+L2(0)_capInvalidateHit=0.000000
+L2(0)_capInvalidateMiss=0.000000
+L2(0)_invalidateHit=0.000000
+L2(0)_invalidateMiss=0.000000
+L2(0)_MSHR:nStallConflict=0.000000
+L2(0)_MSHR_avgSubUse:n=7183551::v=1.000000
+L2(0)_MSHR_avgUse:n=7183551::v=1.827593
+L2(0)_sendFill_occ:n=7183550::v=0.003854
+L2(0)_tracker0=0.000000
+L2(0)_tracker1=0.000000
+L2(0)_tracker10=0.000000
+L2(0)_tracker11=0.000000
+L2(0)_tracker12=0.000000
+L2(0)_tracker13=0.000000
+L2(0)_tracker14=0.000000
+L2(0)_tracker15=0.000000
+L2(0)_tracker2=0.000000
+L2(0)_tracker3=0.000000
+L2(0)_tracker4=0.000000
+L2(0)_tracker5=0.000000
+L2(0)_tracker6=0.000000
+L2(0)_tracker7=0.000000
+L2(0)_tracker8=0.000000
+L2(0)_tracker9=0.000000
+L2(0)_trackerDown1=0.000000
+L2(0)_trackerDown1n=0.000000
+L2(0)_trackerDown2=0.000000
+L2(0)_trackerDown2n=0.000000
+L2(0)_trackerDown3=0.000000
+L2(0)_trackerDown3n=0.000000
+L2(0)_trackerDown4=0.000000
+L2(0)_trackerDown4n=0.000000
+L2(0)_trackerMore=0.000000
+L2(0)_trackerOne=0.000000
+L2(0)_trackerTwo=0.000000
+L2(0)_trackerUp1=0.000000
+L2(0)_trackerUp1n=0.000000
+L2(0)_trackerZero=0.000000
+L2(0)p_MSHR:nStallConflict=0.000000
+L2(0)p_MSHR_avgSubUse:n=0::v=-nan
+L2(0)p_MSHR_avgUse:n=0::v=-nan
+Memory(0):pushDownHit=0.000000
+Memory(0):readHalfMiss=0.000000
+Memory(0):readHit=14050632.000000
+Memory(0):readMiss=0.000000
+Memory(0):writeBack=0.000000
+Memory(0):writeExclusive=0.000000
+Memory(0):writeHalfMiss=0.000000
+Memory(0):writeHit=2143959.000000
+Memory(0):writeMiss=0.000000
+Memory(0)_avgMemLat:n=7025316::v=60.000000
+OS:wallClock=307066632.000000
+P(0):clockTicks=307066632.000000
+P(0):nCommitted=182997978.000000
+P(0):nFreeze=0.000000
+P(0):noFetch=0.000000
+P(0):noFetch2=172111883.000000
+P(0):stldForwarding=4.000000
+P(0)_AUNIT0_1_avgExecuteTime:n=34635057::v=1.002101
+P(0)_AUNIT0_1_avgIssueTime:n=34635057::v=0.029012
+P(0)_AUNIT0_1_avgRenameTime:n=34635057::v=13.313620
+P(0)_AUNIT0_1_avgRetireTime:n=34635057::v=79.567987
+P(0)_AUNIT0_AUNIT_AALU_occ:n=34635063::v=0.000000
+P(0)_AUNIT0_dmemoryBarrier=0.000000
+P(0)_AUNIT0_imemoryBarrier=0.000000
+P(0)_AUNIT0_rdRegPool=69270126.000000
+P(0)_AUNIT0_sched_occ:n=34635063::v=0.002101
+P(0)_AUNIT0_winNotUsed:n=34635057::v=19.813809
+P(0)_AUNIT0_wrForwardBus=108349.000000
+P(0)_AUNIT0_wrRegPool=34635063.000000
+P(0)_avgFetchWidth:n=134954988::v=1.355993
+P(0)_avgPNRHitLoadSpec:n=221478533::v=2.130684
+P(0)_avgPNRMissLoadSpec(1)=22670.000000
+P(0)_avgPNRMissLoadSpec(0)=221455863.000000
+P(0)_avgPNRMissLoadSpec:max=1
+P(0)_avgPNRMissLoadSpec:v=0.000102
+P(0)_avgPNRMissLoadSpec:n=221478533.000000
+P(0)_BPred2_2level:nHit=28385780.000000
+P(0)_BPred2_2level:nMiss=141863.000000
+P(0)_BPred2_BTB:_tracker0=0.000000
+P(0)_BPred2_BTB:_tracker1=0.000000
+P(0)_BPred2_BTB:_tracker10=0.000000
+P(0)_BPred2_BTB:_tracker11=0.000000
+P(0)_BPred2_BTB:_tracker12=0.000000
+P(0)_BPred2_BTB:_tracker13=0.000000
+P(0)_BPred2_BTB:_tracker14=0.000000
+P(0)_BPred2_BTB:_tracker15=0.000000
+P(0)_BPred2_BTB:_tracker2=0.000000
+P(0)_BPred2_BTB:_tracker3=0.000000
+P(0)_BPred2_BTB:_tracker4=0.000000
+P(0)_BPred2_BTB:_tracker5=0.000000
+P(0)_BPred2_BTB:_tracker6=0.000000
+P(0)_BPred2_BTB:_tracker7=0.000000
+P(0)_BPred2_BTB:_tracker8=0.000000
+P(0)_BPred2_BTB:_tracker9=0.000000
+P(0)_BPred2_BTB:_trackerDown1=0.000000
+P(0)_BPred2_BTB:_trackerDown1n=0.000000
+P(0)_BPred2_BTB:_trackerDown2=0.000000
+P(0)_BPred2_BTB:_trackerDown2n=0.000000
+P(0)_BPred2_BTB:_trackerDown3=0.000000
+P(0)_BPred2_BTB:_trackerDown3n=0.000000
+P(0)_BPred2_BTB:_trackerDown4=0.000000
+P(0)_BPred2_BTB:_trackerDown4n=0.000000
+P(0)_BPred2_BTB:_trackerMore=0.000000
+P(0)_BPred2_BTB:_trackerOne=0.000000
+P(0)_BPred2_BTB:_trackerTwo=0.000000
+P(0)_BPred2_BTB:_trackerUp1=0.000000
+P(0)_BPred2_BTB:_trackerUp1n=0.000000
+P(0)_BPred2_BTB:_trackerZero=0.000000
+P(0)_BPred2_BTB:nHit=57568.000000
+P(0)_BPred2_BTB:nHitLabel=28016798.000000
+P(0)_BPred2_BTB:nMiss=4.000000
+P(0)_BPred:nAgree3=0.000000
+P(0)_BPred:nBranches=28586182.000000
+P(0)_BPred:nBranches2=28586182.000000
+P(0)_BPred:nBranches3=0.000000
+P(0)_BPred:nBTAC=967.000000
+P(0)_BPred:nFixes1=28500843.000000
+P(0)_BPred:nFixes2=83.000000
+P(0)_BPred:nFixes3=0.000000
+P(0)_BPred:nHit3_miss2=0.000000
+P(0)_BPred:nMiss=141863.000000
+P(0)_BPred:nMiss2=141863.000000
+P(0)_BPred:nMiss3=0.000000
+P(0)_BPred:nNoPredict=0.000000
+P(0)_BPred:nNoPredict3=0.000000
+P(0)_BPred:nNoPredict_miss3=146699.000000
+P(0)_BPred:nTaken=28074884.000000
+P(0)_BPred:nTaken2=28074884.000000
+P(0)_BPred:nTaken3=0.000000
+P(0)_BPred:nUnFixes=141875.000000
+P(0)_BPred_2bit:nHit=28385709.000000
+P(0)_BPred_2bit:nMiss=141863.000000
+P(0)_BPred_BTB:_tracker0=0.000000
+P(0)_BPred_BTB:_tracker1=0.000000
+P(0)_BPred_BTB:_tracker10=0.000000
+P(0)_BPred_BTB:_tracker11=0.000000
+P(0)_BPred_BTB:_tracker12=0.000000
+P(0)_BPred_BTB:_tracker13=0.000000
+P(0)_BPred_BTB:_tracker14=0.000000
+P(0)_BPred_BTB:_tracker15=0.000000
+P(0)_BPred_BTB:_tracker2=0.000000
+P(0)_BPred_BTB:_tracker3=0.000000
+P(0)_BPred_BTB:_tracker4=0.000000
+P(0)_BPred_BTB:_tracker5=0.000000
+P(0)_BPred_BTB:_tracker6=0.000000
+P(0)_BPred_BTB:_tracker7=0.000000
+P(0)_BPred_BTB:_tracker8=0.000000
+P(0)_BPred_BTB:_tracker9=0.000000
+P(0)_BPred_BTB:_trackerDown1=0.000000
+P(0)_BPred_BTB:_trackerDown1n=0.000000
+P(0)_BPred_BTB:_trackerDown2=0.000000
+P(0)_BPred_BTB:_trackerDown2n=0.000000
+P(0)_BPred_BTB:_trackerDown3=0.000000
+P(0)_BPred_BTB:_trackerDown3n=0.000000
+P(0)_BPred_BTB:_trackerDown4=0.000000
+P(0)_BPred_BTB:_trackerDown4n=0.000000
+P(0)_BPred_BTB:_trackerMore=0.000000
+P(0)_BPred_BTB:_trackerOne=0.000000
+P(0)_BPred_BTB:_trackerTwo=0.000000
+P(0)_BPred_BTB:_trackerUp1=0.000000
+P(0)_BPred_BTB:_trackerUp1n=0.000000
+P(0)_BPred_BTB:_trackerZero=0.000000
+P(0)_BPred_BTB:nHit=28074236.000000
+P(0)_BPred_BTB:nHitLabel=0.000000
+P(0)_BPred_BTB:nMiss=134.000000
+P(0)_BPred_RAS:nHit=57578.000000
+P(0)_BPred_RAS:nMiss=8.000000
+P(0)_CUNIT2_15_avgExecuteTime:n=9864090::v=7.009039
+P(0)_CUNIT2_15_avgIssueTime:n=9864090::v=17.627108
+P(0)_CUNIT2_15_avgRenameTime:n=9864090::v=13.078396
+P(0)_CUNIT2_15_avgRetireTime:n=9864090::v=56.917520
+P(0)_CUNIT2_CUNIT_CALU_occ:n=9864095::v=0.000000
+P(0)_CUNIT2_rdRegPool=19728192.000000
+P(0)_CUNIT2_sched_occ:n=9864095::v=0.009039
+P(0)_CUNIT2_winNotUsed:n=9864090::v=25.510116
+P(0)_CUNIT2_wrForwardBus=9525036.000000
+P(0)_CUNIT2_wrRegPool=9864096.000000
+P(0)_ExeEngine:nDivergeStall=0.000000
+P(0)_ExeEngine:nOutsBranchesStall=0.000000
+P(0)_ExeEngine:nOutsLoadsStall=0.000000
+P(0)_ExeEngine:nOutsStoresStall=0.000000
+P(0)_ExeEngine:nReplaysStall=0.000000
+P(0)_ExeEngine:nSmallREGStall=315544393.000000
+P(0)_ExeEngine:nSmallROBStall=0.000000
+P(0)_ExeEngine:nSmallWinStall=207482.000000
+P(0)_ExeEngine:nSyscallStall=0.000000
+P(0)_ExeEngine_iAALU:n=68683602.000000
+P(0)_ExeEngine_iBALU_LBRANCH:n=28527642.000000
+P(0)_ExeEngine_iBALU_LCALL:n=20.000000
+P(0)_ExeEngine_iBALU_LJUMP:n=947.000000
+P(0)_ExeEngine_iBALU_RBRANCH:n=0.000000
+P(0)_ExeEngine_iBALU_RCALL:n=57567.000000
+P(0)_ExeEngine_iBALU_RET:n=57586.000000
+P(0)_ExeEngine_iBALU_RJUMP:n=5.000000
+P(0)_ExeEngine_iCALU_DIV:n=0.000000
+P(0)_ExeEngine_iCALU_FPALU:n=415587.000000
+P(0)_ExeEngine_iCALU_FPDIV:n=0.000000
+P(0)_ExeEngine_iCALU_FPMULT:n=9448509.000000
+P(0)_ExeEngine_iCALU_MULT:n=72.000000
+P(0)_ExeEngine_iLALU_LD:n=65995546.000000
+P(0)_ExeEngine_iRALU:n=293262.000000
+P(0)_ExeEngine_iSALU_ADDR:n=0.000000
+P(0)_ExeEngine_iSALU_LL:n=0.000000
+P(0)_ExeEngine_iSALU_SC:n=0.000000
+P(0)_ExeEngine_iSALU_ST:n=9517683.000000
+P(0)_ExeEngine_iSubInvalid:n=0.000000
+P(0)_FetchEngine:nBTAC=0.000000
+P(0)_FetchEngine:nDelayInst1=2474527.000000
+P(0)_FetchEngine:nDelayInst2=7334177.000000
+P(0)_FetchEngine:nDelayInst3=57003869.000000
+P(0)_FetchEngine_avgBranchTime:n=141875::v=17.441600
+P(0)_FetchEngine_avgBranchTime2:n=28501893::v=2.000003
+P(0)_FetchEngine_avgFetched:n=134954988::v=1.355993
+P(0)_FetchEngine_avgFetchLost:n=134954988::v=0.809892
+P(0)_FetchEngine_avgFetchTime:n=28643768::v=1082.951393
+P(0)_ipc:n=61::v=59.901952
+P(0)_MUNIT1_10_avgExecuteTime:n=65995526::v=34.737661
+P(0)_MUNIT1_10_avgIssueTime:n=65995526::v=0.016727
+P(0)_MUNIT1_10_avgRenameTime:n=65995526::v=15.708922
+P(0)_MUNIT1_10_avgRetireTime:n=65995526::v=43.911737
+P(0)_MUNIT1_11_avgExecuteTime:n=9517679::v=0.000051
+P(0)_MUNIT1_11_avgIssueTime:n=9517679::v=16.370439
+P(0)_MUNIT1_11_avgRenameTime:n=9517679::v=19.946667
+P(0)_MUNIT1_11_avgRetireTime:n=9517679::v=49.843306
+P(0)_MUNIT1_14_avgExecuteTime:n=0::v=-nan
+P(0)_MUNIT1_14_avgIssueTime:n=0::v=-nan
+P(0)_MUNIT1_14_avgRenameTime:n=0::v=-nan
+P(0)_MUNIT1_14_avgRetireTime:n=0::v=-nan
+P(0)_MUNIT1_18_avgExecuteTime:n=72::v=5.000000
+P(0)_MUNIT1_18_avgIssueTime:n=72::v=0.833333
+P(0)_MUNIT1_18_avgRenameTime:n=72::v=56.777778
+P(0)_MUNIT1_18_avgRetireTime:n=72::v=12.416667
+P(0)_MUNIT1_2_avgExecuteTime:n=34341795::v=1.000689
+P(0)_MUNIT1_2_avgIssueTime:n=34341795::v=0.028575
+P(0)_MUNIT1_2_avgRenameTime:n=34341795::v=13.318273
+P(0)_MUNIT1_2_avgRetireTime:n=34341795::v=79.567649
+P(0)_MUNIT1_3_avgExecuteTime:n=28643761::v=4.000319
+P(0)_MUNIT1_3_avgIssueTime:n=28643761::v=0.059416
+P(0)_MUNIT1_3_avgRenameTime:n=28643761::v=14.565637
+P(0)_MUNIT1_3_avgRetireTime:n=28643761::v=72.500494
+P(0)_MUNIT1_iSALU_ADDR:stldViolations=0.000000
+P(0)_MUNIT1_iSALU_ST:stldViolations=0.000000
+P(0)_MUNIT1_MUNIT_AALU_occ:n=34341801::v=0.000058
+P(0)_MUNIT1_MUNIT_BALU_occ:n=28643767::v=0.000074
+P(0)_MUNIT1_MUNIT_CALU_occ:n=72::v=0.000000
+P(0)_MUNIT1_MUNIT_MALU_occ:n=75513227::v=0.468219
+P(0)_MUNIT1_MUNIT_SALU_occ:n=0::v=-nan
+P(0)_MUNIT1_rdRegPool=276997738.000000
+P(0)_MUNIT1_sched_occ:n=138498867::v=0.002119
+P(0)_MUNIT1_specld:stldViolations=0.000000
+P(0)_MUNIT1_winNotUsed:n=138498831::v=11.594756
+P(0)_MUNIT1_wrForwardBus=9606481.000000
+P(0)_MUNIT1_wrRegPool=100395006.000000
+P(0)_nReplayInst:n=0::v=-nan
+P(0)_pref__avgPrefetchConf:n=0::v=-nan
+P(0)_pref__histPrefetchDelta:max=0
+P(0)_pref__histPrefetchDelta:v=-nan
+P(0)_pref__histPrefetchDelta:n=0.000000
+P(0)_pref_avgPrefetchNum:n=0::v=-nan
+P(0)_prof_4a990:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=800:bp1_miss=0:bp2_hit=800:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=800:on_time_tl=0:late_tl=0
+P(0)_prof_4a748:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a720:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a6ee:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a6e8:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a5ba:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a4ae:n=0.007:cpi=0.000000:wt=0.000000:et=0.000000:flush=1050:prefetch=0:ldbr=0:bp1_hit=208547:bp1_miss=1054:bp2_hit=208551:bp2_miss=1050:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=209601:on_time_tl=0:late_tl=0
+P(0)_prof_4a492:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=1048:bp1_miss=0:bp2_hit=1048:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=1048:on_time_tl=0:late_tl=0
+P(0)_prof_4a476:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=5:bp1_miss=0:bp2_hit=5:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_25e08:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=5:prefetch=0:ldbr=0:bp1_hit=120:bp1_miss=5:bp2_hit=120:bp2_miss=5:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=125:on_time_tl=0:late_tl=0
+P(0)_prof_25e7c:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=5:bp1_miss=0:bp2_hit=5:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_25d5c:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=5:bp1_miss=0:bp2_hit=5:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_25d34:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=1:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=5:bp2_hit=4:bp2_miss=1:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_25d26:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=5:bp1_miss=0:bp2_hit=5:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_1063c:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=1:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=2:bp2_hit=1:bp2_miss=1:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=2:on_time_tl=0:late_tl=0
+P(0)_prof_4a8ea:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_49f98:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=56514:bp1_miss=0:bp2_hit=56514:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=56514:on_time_tl=0:late_tl=0
+P(0)_prof_4a956:n=0.329:cpi=0.000000:wt=0.000000:et=0.000000:flush=46870:prefetch=0:ldbr=0:bp1_hit=9327168:bp1_miss=46873:bp2_hit=9327171:bp2_miss=46870:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=9374041:on_time_tl=0:late_tl=0
+P(0)_prof_49f78:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=22:prefetch=0:ldbr=0:bp1_hit=56969:bp1_miss=22:bp2_hit=56969:bp2_miss=22:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=56991:on_time_tl=0:late_tl=0
+P(0)_prof_4a522:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=282:prefetch=0:ldbr=0:bp1_hit=56231:bp1_miss=283:bp2_hit=56232:bp2_miss=282:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=56514:on_time_tl=0:late_tl=0
+P(0)_prof_4a4d8:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=6:bp1_miss=0:bp2_hit=6:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=6:on_time_tl=0:late_tl=0
+P(0)_prof_4a888:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=9:prefetch=0:ldbr=0:bp1_hit=1585:bp1_miss=15:bp2_hit=1591:bp2_miss=9:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=1600:on_time_tl=0:late_tl=0
+P(0)_prof_4a53c:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a4c6:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=7:prefetch=0:ldbr=0:bp1_hit=1038:bp1_miss=11:bp2_hit=1042:bp2_miss=7:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=1049:on_time_tl=0:late_tl=0
+P(0)_prof_4a962:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=472:prefetch=0:ldbr=0:bp1_hit=46395:bp1_miss=475:bp2_hit=46398:bp2_miss=472:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=46870:on_time_tl=0:late_tl=0
+P(0)_prof_4a480:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=5:bp1_miss=0:bp2_hit=5:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_4a8a6:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a4fe:n=0.396:cpi=0.000000:wt=0.000000:et=0.000000:flush=56515:prefetch=0:ldbr=0:bp1_hit=11246567:bp1_miss=56517:bp2_hit=11246569:bp2_miss=56515:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=11303084:on_time_tl=0:late_tl=0
+P(0)_prof_4a864:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a916:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=242:bp1_miss=0:bp2_hit=242:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=242:on_time_tl=0:late_tl=0
+P(0)_prof_4a568:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=5:prefetch=0:ldbr=0:bp1_hit=794:bp1_miss=6:bp2_hit=795:bp2_miss=5:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=800:on_time_tl=0:late_tl=0
+P(0)_prof_49f6a:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=533:prefetch=0:ldbr=0:bp1_hit=57034:bp1_miss=533:bp2_hit=57034:bp2_miss=533:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=57567:on_time_tl=0:late_tl=0
+P(0)_prof_4a8a2:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a97a:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=9:prefetch=0:ldbr=0:bp1_hit=218:bp1_miss=16:bp2_hit=225:bp2_miss=9:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=234:on_time_tl=0:late_tl=0
+P(0)_prof_4a732:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_49f5c:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=57567:bp1_miss=0:bp2_hit=57567:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=57567:on_time_tl=0:late_tl=0
+P(0)_prof_4a81e:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a97e:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=4:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=4:bp2_hit=0:bp2_miss=4:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a892:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a966:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=234:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=239:bp2_hit=5:bp2_miss=234:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=239:on_time_tl=0:late_tl=0
+P(0)_prof_4a934:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=46873:bp1_miss=0:bp2_hit=46873:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=46873:on_time_tl=0:late_tl=0
+P(0)_prof_4a9a0:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=800:bp1_miss=0:bp2_hit=800:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=800:on_time_tl=0:late_tl=0
+P(0)_prof_25d78:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=1:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=5:bp2_hit=4:bp2_miss=1:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=5:on_time_tl=0:late_tl=0
+P(0)_prof_4a504:n=0.002:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=56515:bp1_miss=0:bp2_hit=56515:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=56515:on_time_tl=0:late_tl=0
+P(0)_prof_4a5a8:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a532:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=5:prefetch=0:ldbr=0:bp1_hit=271:bp1_miss=11:bp2_hit=277:bp2_miss=5:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=282:on_time_tl=0:late_tl=0
+P(0)_prof_4a580:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=1:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=4:bp2_hit=3:bp2_miss=1:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a844:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a7ce:n=0.001:cpi=0.000000:wt=0.000000:et=0.000000:flush=16:prefetch=0:ldbr=0:bp1_hit=36406:bp1_miss=16:bp2_hit=36406:bp2_miss=16:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=36422:on_time_tl=0:late_tl=0
+P(0)_prof_4a7de:n=0.250:cpi=0.000000:wt=0.000000:et=0.000000:flush=35626:prefetch=0:ldbr=0:bp1_hit=7088938:bp1_miss=35627:bp2_hit=7088939:bp2_miss=35626:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=7124565:on_time_tl=0:late_tl=0
+P(0)_prof_4a7fc:n=0.001:cpi=0.000000:wt=0.000000:et=0.000000:flush=186:prefetch=0:ldbr=0:bp1_hit=36238:bp1_miss=188:bp2_hit=36240:bp2_miss=186:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=36426:on_time_tl=0:late_tl=0
+P(0)_prof_4a54c:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=4:bp1_miss=0:bp2_hit=4:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=4:on_time_tl=0:late_tl=0
+P(0)_prof_4a8fc:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=238:bp1_miss=0:bp2_hit=238:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=238:on_time_tl=0:late_tl=0
+P(0)_prof_4a810:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=9:prefetch=0:ldbr=0:bp1_hit=171:bp1_miss=15:bp2_hit=177:bp2_miss=9:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=186:on_time_tl=0:late_tl=0
+P(0)_prof_4a4dc:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=284:bp1_miss=0:bp2_hit=284:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=284:on_time_tl=0:late_tl=0
+P(0)_prof_4a816:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=0:bp1_miss=8:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_prof_4a828:n=0.000:cpi=0.000000:wt=0.000000:et=0.000000:flush=0:prefetch=0:ldbr=0:bp1_hit=8:bp1_miss=0:bp2_hit=8:bp2_miss=0:bp3_hit=0:bp3_miss=0:bp_hit2_miss3=0:bp_hit3_miss2=0:no_tl=8:on_time_tl=0:late_tl=0
+P(0)_robUsed:n=221478533::v=8.162869
+P(0)_rrobUsed:n=306977134::v=41.839268
+P(0)_uipc:n=61::v=59.886093
+P(0)_zeroDinst:nBTAC=0.000000
+powerTime=0.000000
+progressedTime:max=3947882758.000000:n=1
+S(0):DetailInst=2006099940.000000
+S(0):DetailTime=2832064.000000
+S(0):globalClock_Timing=307046583.000000
+S(0):InitInst=0.000000
+S(0):InitTime=0.000000
+S(0):nSwitches=186.000000
+S(0):RabbitInst=1810900061.000000
+S(0):RabbitTime=24645684.000000
+S(0):TimingInst=183000000.000000
+S(0):TimingTime=126070837.000000
+S(0):WarmupInst=0.000000
+S(0):WarmupTime=0.000000
+#END GStats::report done
